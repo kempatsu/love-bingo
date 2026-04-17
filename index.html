@@ -12,9 +12,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px 5px; /* Added side padding to the body */
+            padding: 10px 0; /* Vertical padding only */
             margin: 0;
             overflow-x: hidden;
+            width: 100vw;
         }
         h1 { color: #d81b60; font-size: 1.4rem; margin: 10px 0; text-align: center; }
         
@@ -22,13 +23,15 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 4px;
-            width: 94vw; /* Slightly narrower to ensure the border shows */
+            /* Forces the grid to be exactly 20px smaller than the total screen width */
+            width: calc(100vw - 20px); 
             max-width: 450px;
             background-color: #d81b60;
             padding: 6px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin: 0 auto; /* Centers the grid */
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .cell {
@@ -38,8 +41,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 3px;
-            font-size: 2.3vw; /* Slightly smaller font to prevent overflow */
+            padding: 2px;
+            font-size: 2.2vw;
             font-weight: bold;
             cursor: pointer;
             border-radius: 4px;
@@ -50,7 +53,7 @@
 
         @media (min-width: 500px) {
             .cell { font-size: 11px; }
-            #bingo-grid { width: 100%; }
+            #bingo-grid { width: 450px; }
         }
 
         .cell.selected {
