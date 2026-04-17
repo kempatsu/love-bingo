@@ -12,45 +12,45 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px;
+            padding: 15px 5px; /* Added side padding to the body */
             margin: 0;
-            overflow-x: hidden; /* Prevent side-scrolling */
+            overflow-x: hidden;
         }
         h1 { color: #d81b60; font-size: 1.4rem; margin: 10px 0; text-align: center; }
         
         #bingo-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
-            gap: 4px; /* Tight gap for mobile */
-            width: 100%;
-            max-width: 450px; /* Limits size on desktop, but fills phone */
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            width: 94vw; /* Slightly narrower to ensure the border shows */
+            max-width: 450px;
             background-color: #d81b60;
             padding: 6px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin: 0 auto; /* Centers the grid */
         }
         
         .cell {
             background-color: white;
-            aspect-ratio: 1 / 1; /* Keeps them perfect squares */
+            aspect-ratio: 1 / 1;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 2px;
-            font-size: 2.4vw; /* Scales font based on screen width */
+            padding: 3px;
+            font-size: 2.3vw; /* Slightly smaller font to prevent overflow */
             font-weight: bold;
             cursor: pointer;
             border-radius: 4px;
             line-height: 1.1;
             word-wrap: break-word;
-            hyphens: auto;
             color: #333;
         }
 
-        /* Adjust font size for larger screens like Desktop */
         @media (min-width: 500px) {
-            .cell { font-size: 12px; }
+            .cell { font-size: 11px; }
+            #bingo-grid { width: 100%; }
         }
 
         .cell.selected {
@@ -61,14 +61,14 @@
             background-color: #f8bbd0;
             color: #d81b60;
             border: 1.5px dashed #d81b60;
-            font-size: 2.2vw;
+            font-size: 2vw;
         }
 
-        .controls { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; width: 100%; align-items: center; }
+        .controls { margin-top: 25px; display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; }
         
         button {
-            padding: 12px 20px;
-            width: 90%;
+            padding: 14px 20px;
+            width: 85%;
             max-width: 280px;
             font-size: 16px;
             font-weight: bold;
@@ -78,7 +78,7 @@
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-            -webkit-tap-highlight-color: transparent; /* Removes blue flash on tap */
+            -webkit-tap-highlight-color: transparent;
         }
         
         button.shuffle { background-color: #ec407a; }
