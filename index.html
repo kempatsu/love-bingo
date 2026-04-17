@@ -12,26 +12,25 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 0; /* Vertical padding only */
+            padding: 20px 10px;
             margin: 0;
             overflow-x: hidden;
-            width: 100vw;
+            min-height: 100vh;
         }
-        h1 { color: #d81b60; font-size: 1.4rem; margin: 10px 0; text-align: center; }
+        h1 { color: #d81b60; font-size: 1.8rem; margin: 10px 0 20px 0; text-align: center; }
         
         #bingo-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
-            /* Forces the grid to be exactly 20px smaller than the total screen width */
-            width: calc(100vw - 20px); 
-            max-width: 450px;
+            gap: 6px;
+            /* Mobile Default */
+            width: calc(100vw - 30px); 
+            max-width: 500px; 
             background-color: #d81b60;
-            padding: 6px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-left: auto;
-            margin-right: auto;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin: 0 auto;
         }
         
         .cell {
@@ -41,51 +40,60 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 2px;
-            font-size: 2.2vw;
+            padding: 5px;
+            font-size: 2.8vw; /* Fluid font for mobile */
             font-weight: bold;
             cursor: pointer;
-            border-radius: 4px;
-            line-height: 1.1;
+            border-radius: 6px;
+            line-height: 1.2;
             word-wrap: break-word;
             color: #333;
+            transition: transform 0.1s;
         }
 
-        @media (min-width: 500px) {
-            .cell { font-size: 11px; }
-            #bingo-grid { width: 450px; }
+        /* Desktop specific fixes */
+        @media (min-width: 600px) {
+            .cell { font-size: 14px; padding: 10px; }
+            #bingo-grid { width: 500px; gap: 10px; padding: 12px; }
         }
+
+        .cell:active { transform: scale(0.95); }
 
         .cell.selected {
             background-color: #f06292 !important;
             color: white !important;
         }
+        
         .free-space {
             background-color: #f8bbd0;
             color: #d81b60;
-            border: 1.5px dashed #d81b60;
-            font-size: 2vw;
+            border: 2px dashed #d81b60;
+            font-size: 3vw;
+        }
+        
+        @media (min-width: 600px) {
+            .free-space { font-size: 18px; }
         }
 
-        .controls { margin-top: 25px; display: flex; flex-direction: column; gap: 10px; width: 100%; align-items: center; }
+        .controls { margin-top: 30px; display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center; }
         
         button {
-            padding: 14px 20px;
+            padding: 16px 24px;
             width: 85%;
-            max-width: 280px;
-            font-size: 16px;
+            max-width: 320px;
+            font-size: 18px;
             font-weight: bold;
             background-color: #d81b60;
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(216, 27, 96, 0.3);
             -webkit-tap-highlight-color: transparent;
         }
         
         button.shuffle { background-color: #ec407a; }
-        .reset { margin-top: 15px; color: #ad1457; font-size: 12px; text-decoration: underline; cursor: pointer; padding: 10px; }
+        .reset { margin-top: 20px; color: #ad1457; font-size: 14px; text-decoration: underline; cursor: pointer; padding: 10px; font-weight: 500; }
     </style>
 </head>
 <body>
