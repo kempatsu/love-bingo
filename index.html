@@ -15,7 +15,6 @@
             padding: 10px;
             margin: 0;
             min-height: 100vh;
-            overflow-x: hidden;
         }
         h1 { color: #d81b60; font-size: 1.6rem; margin: 15px 0; text-align: center; }
         
@@ -23,14 +22,12 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 6px;
-            width: 95vw;
+            width: calc(100vw - 20px);
             max-width: 500px;
             background-color: #d81b60;
             padding: 8px;
             border-radius: 12px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            /* This ensures the red box stays visible even if empty */
-            min-height: 200px; 
         }
         
         .cell {
@@ -48,8 +45,6 @@
             line-height: 1.1;
             word-wrap: break-word;
             color: #333;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         @media (min-width: 600px) {
@@ -84,4 +79,101 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         
-        button.
+        button.shuffle { background-color: #ec407a; }
+        .reset { margin-top: 15px; color: #ad1457; font-size: 12px; text-decoration: underline; cursor: pointer; padding: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>💘 Love or Pop Bingo 💘</h1>
+    
+    <div id="bingo-grid">
+        <div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div>
+        <div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div>
+        <div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell free-space selected" id="free-space">FREE SPACE</div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div>
+        <div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div>
+        <div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div><div class="cell" onclick="toggle(this)"></div>
+    </div>
+
+    <div class="controls">
+        <button onclick="checkWinManual()">Check for Bingo!</button>
+        <button class="shuffle" onclick="shuffleBoard()">🔀 Shuffle Tiles</button>
+        <div class="reset" onclick="resetBoard()">Reset All Progress</div>
+    </div>
+
+    <script>
+        const rawItems = [
+            "Open minded", "Atlanta", "Love Language", "Equally Yoked", "Communication",
+            "Feet", "God Fearing", "Height", "Intentional", "\"Yay-ess\"",
+            "3+ Jobs", "3+ Kids", "::Everyone Pops::", "::No One Pops::",
+            "Long Distance", "\"What's your relationship with the Lord\"", "(Wears a grill)", 
+            "like/don't like \"The Fit\"", "Entrepreneur", "Traditional", "Ageism", "Colorism", 
+            "Asks for their balloon back", "\"We got a maaaaatch!\""
+        ];
+
+        let currentOrder = JSON.parse(localStorage.getItem('bingoOrder')) || [...rawItems];
+        let savedState = JSON.parse(localStorage.getItem('lovePopProgress')) || {};
+
+        function populate() {
+            const cells = document.querySelectorAll('.cell:not(.free-space)');
+            cells.forEach((cell, i) => {
+                const text = currentOrder[i];
+                cell.textContent = text;
+                if (savedState[text]) {
+                    cell.classList.add('selected');
+                } else {
+                    cell.classList.remove('selected');
+                }
+            });
+        }
+
+        function toggle(cell) {
+            cell.classList.toggle('selected');
+            saveProgress();
+        }
+
+        function saveProgress() {
+            const state = {};
+            document.querySelectorAll('.cell.selected:not(.free-space)').forEach(c => {
+                state[c.textContent] = true;
+            });
+            localStorage.setItem('lovePopProgress', JSON.stringify(state));
+        }
+
+        function shuffleBoard() {
+            if(confirm("Shuffle tiles? This resets current marks.")) {
+                for (let i = currentOrder.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [currentOrder[i], currentOrder[j]] = [currentOrder[j], currentOrder[i]];
+                }
+                localStorage.setItem('bingoOrder', JSON.stringify(currentOrder));
+                localStorage.removeItem('lovePopProgress');
+                savedState = {};
+                populate();
+            }
+        }
+
+        function checkWinManual() {
+            const cells = document.querySelectorAll('.cell');
+            const selected = Array.from(cells).map(c => c.classList.contains('selected'));
+            const wins = [
+                [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],
+                [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],
+                [0,6,12,18,24],[4,8,12,16,20]
+            ];
+            if (wins.some(w => w.every(i => selected[i]))) alert("🎉 BINGO!");
+            else alert("No Bingo yet!");
+        }
+
+        function resetBoard() {
+            if(confirm("Clear all marks?")) {
+                localStorage.removeItem('lovePopProgress');
+                savedState = {};
+                populate();
+            }
+        }
+
+        populate();
+    </script>
+</body>
+</html>
